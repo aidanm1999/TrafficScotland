@@ -1,6 +1,21 @@
 <resources>
-    <string name="app_name">TrafficScotland</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="app_name">Traffic Scotland</string>
+    <string name="title_today_in_transit">Today in Transit</string>
+    <string name="title_have_a_look">Have a Look</string>
+    <string name="title_journey_planner">Journey Planner</string>
+    <string name="title_alternatives">Alternatives</string>
+
+    <string name="title_short_today_in_transit">Today</string>
+    <string name="title_short_have_a_look">Look</string>
+    <string name="title_short_journey_planner">Planner</string>
+    <string name="title_short_alternatives">Alternatives</string>
+
+
+    <string name="text_box_enter_a_date">Enter a date</string>
+    <string name="text_box_filter_by">Filter by</string>
+    <string name="text_box_search">Search</string>
+    <string name="text_box_enter_a_start_point">Enter a start point</string>
+    <string name="text_box_enter_a_destination">Enter a destination</string>
+    <string name="title_activity_maps">Map</string>
+
 </resources>

@@ -3,23 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_today_in_transit">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="www.aidanm.trafficscotland.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_today_in_transit"
+        android:name="www.aidanm.trafficscotland.views.today.TodayFragment"
+        android:label="@string/title_today_in_transit"
+        tools:layout="@layout/fragment_today_in_transit" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="www.aidanm.trafficscotland.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_have_a_look"
+        android:name="www.aidanm.trafficscotland.views.look.LookFragment"
+        android:label="@string/title_have_a_look"
+        tools:layout="@layout/fragment_have_a_look" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="www.aidanm.trafficscotland.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_journey_planner"
+        android:name="www.aidanm.trafficscotland.views.planner.PlannerFragment"
+        android:label="@string/title_journey_planner"
+        tools:layout="@layout/fragment_journey_planner" />
+
+    <fragment
+        android:id="@+id/navigation_alternatives"
+        android:name="www.aidanm.trafficscotland.views.alternatives.AlternativesFragment"
+        android:label="@string/title_alternatives"
+        tools:layout="@layout/fragment_alternatives" />
 </navigation>

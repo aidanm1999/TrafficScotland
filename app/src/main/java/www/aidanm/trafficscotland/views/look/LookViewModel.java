@@ -1,16 +1,16 @@
-package www.aidanm.trafficscotland.ui.dashboard;
+package www.aidanm.trafficscotland.views.look;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class DashboardViewModel extends ViewModel {
+public class LookViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public DashboardViewModel() {
+    public LookViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        mText.setValue("This is look fragment");
     }
 
     public LiveData<String> getText() {

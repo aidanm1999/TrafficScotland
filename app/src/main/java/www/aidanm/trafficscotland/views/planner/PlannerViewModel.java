@@ -1,16 +1,16 @@
-package www.aidanm.trafficscotland.ui.notifications;
+package www.aidanm.trafficscotland.views.planner;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class PlannerViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public PlannerViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue("This is planner fragment");
     }
 
     public LiveData<String> getText() {
