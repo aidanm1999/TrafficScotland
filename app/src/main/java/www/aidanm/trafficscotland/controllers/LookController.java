@@ -60,27 +60,27 @@ public class LookController extends Fragment implements OnMapReadyCallback {
         map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(52.930535,-0.046874)));
     }
 
-//    @Override
-//    public void onResume() {
-//        mapView.onResume();
-//        super.onResume();
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        mapView.onPause();
-//        super.onPause();
-//    }
-//
-//    @Override
-//    public void onDestroy() {
-//        mapView.onDestroy();
-//        super.onDestroy();
-//    }
-//
-//    @Override
-//    public void onLowMemory() {
-//        mapView.onLowMemory();
-//        super.onLowMemory();
-//    }
+    @Override
+    public void onResume() {
+        mapView.onResume();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        mapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        mapView.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        mapView.onLowMemory();
+        super.onLowMemory();
+    }
 }

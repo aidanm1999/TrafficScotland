@@ -28,4 +28,5 @@
         android:name="www.aidanm.trafficscotland.controllers.AlternativesController"
         android:label="@string/title_alternatives"
         tools:layout="@layout/fragment_alternatives" />
+
 </navigation>
