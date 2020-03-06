@@ -1,4 +1,4 @@
-package www.aidanm.trafficscotland.views.planner;
+package www.aidanm.trafficscotland.models.viewmodels.planner;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

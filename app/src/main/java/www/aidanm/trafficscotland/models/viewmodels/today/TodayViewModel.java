@@ -1,4 +1,4 @@
-package www.aidanm.trafficscotland.views.today;
+package www.aidanm.trafficscotland.models.viewmodels.today;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

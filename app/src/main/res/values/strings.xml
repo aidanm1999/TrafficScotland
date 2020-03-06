@@ -18,4 +18,5 @@
     <string name="text_box_enter_a_destination">Enter a destination</string>
     <string name="title_activity_maps">Map</string>
 
+    <string name="google_maps_key">AIzaSyCzmgwj-lboVz6j5-_J2gkMkvJNSIFiAGE</string>
 </resources>

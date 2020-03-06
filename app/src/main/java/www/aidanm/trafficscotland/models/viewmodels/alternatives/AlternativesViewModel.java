@@ -1,16 +1,16 @@
-package www.aidanm.trafficscotland.views.look;
+package www.aidanm.trafficscotland.models.viewmodels.alternatives;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class LookViewModel extends ViewModel {
+public class AlternativesViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public LookViewModel() {
+    public AlternativesViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is look fragment");
+        mText.setValue("This is alternatives fragment");
     }
 
     public LiveData<String> getText() {

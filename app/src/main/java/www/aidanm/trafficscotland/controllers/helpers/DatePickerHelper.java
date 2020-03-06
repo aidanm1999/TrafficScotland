@@ -12,6 +12,7 @@ import java.util.TimeZone;
 public class DatePickerHelper {
 
     private TextInputEditText _dateInput;
+    private long _today;
     private long _startDate;
     private long _endDate;
     private Calendar _calendar;
@@ -53,17 +54,12 @@ public class DatePickerHelper {
     public String today(){
         SimpleDateFormat dateFormat = new SimpleDateFormat(_dateFormatString);
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date today = _calendar.getInstance().getTime();
+        Date today = Calendar.getInstance().getTime();
         return dateFormat.format(today);
     }
 
     public boolean validate(long dateToValidate){
-        if(dateToValidate > _startDate)
-        {
-            return true;
-        }
-
-        return false;
+        return dateToValidate > _today;
     }
 
 

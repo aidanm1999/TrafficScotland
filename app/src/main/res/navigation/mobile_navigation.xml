@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/navigation_today_in_transit"
-        android:name="www.aidanm.trafficscotland.views.today.TodayFragment"
+        android:name="www.aidanm.trafficscotland.controllers.TodayController"
         android:label="@string/title_today_in_transit"
-        tools:layout="@layout/fragment_today_in_transit" />
+        tools:layout="@layout/fragment_today" />
 
     <fragment
         android:id="@+id/navigation_have_a_look"
-        android:name="www.aidanm.trafficscotland.views.look.LookFragment"
+        android:name="www.aidanm.trafficscotland.controllers.LookController"
         android:label="@string/title_have_a_look"
-        tools:layout="@layout/fragment_have_a_look" />
+        tools:layout="@layout/fragment_look" />
 
     <fragment
         android:id="@+id/navigation_journey_planner"
-        android:name="www.aidanm.trafficscotland.views.planner.PlannerFragment"
+        android:name="www.aidanm.trafficscotland.controllers.PlannerController"
         android:label="@string/title_journey_planner"
-        tools:layout="@layout/fragment_journey_planner" />
+        tools:layout="@layout/fragment_planner" />
 
     <fragment
         android:id="@+id/navigation_alternatives"
-        android:name="www.aidanm.trafficscotland.views.alternatives.AlternativesFragment"
+        android:name="www.aidanm.trafficscotland.controllers.AlternativesController"
         android:label="@string/title_alternatives"
         tools:layout="@layout/fragment_alternatives" />
 </navigation>
