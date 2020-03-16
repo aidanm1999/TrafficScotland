@@ -9,6 +9,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import www.aidanm.trafficscotland.controllers.LookController;
+import www.aidanm.trafficscotland.controllers.TodayController;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        TodayController todayController = new TodayController();
 
 
         setContentView(R.layout.activity_main);

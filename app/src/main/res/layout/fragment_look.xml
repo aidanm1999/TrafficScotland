@@ -50,14 +50,23 @@
             android:visibility="visible" />
     </com.google.android.material.textfield.TextInputLayout>
 
-<!--    <include layout="@layout/layout_look_map" />-->
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/look_map_view"
-        android:name="com.google.android.gms.maps.MapView"
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="400dp"
+        app:cardCornerRadius="12dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/look_search_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/look_search_layout">
+
+        <com.google.android.gms.maps.MapView
+            android:layout_height="match_parent"
+            android:id="@+id/look_map_view"
+            android:name="com.google.android.gms.maps.MapView"
+            android:layout_width="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

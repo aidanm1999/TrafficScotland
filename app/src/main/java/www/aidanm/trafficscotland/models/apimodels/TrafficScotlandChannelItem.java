@@ -28,11 +28,12 @@ public class TrafficScotlandChannelItem {
 
 
     // Overloaded Constructor
-    public TrafficScotlandChannelItem(String title, String description, String link, TrafficScotlandCoordinates coordinates){
+    public TrafficScotlandChannelItem(String title, String description, String link, TrafficScotlandCoordinates coordinates, Date datePublished){
         Title = title;
         Description = description;
         Link = link;
         Coordinates = coordinates;
+        DatePublished = datePublished;
     }
 
 
@@ -70,5 +71,13 @@ public class TrafficScotlandChannelItem {
 
     public void setCoordinates(double latitude, double longitude) {
         Coordinates = new TrafficScotlandCoordinates(latitude, longitude);
+    }
+
+    public Date getDatePublished() {
+        return DatePublished;
+    }
+
+    public void setDatePublished(Date datePublished) {
+        DatePublished = datePublished;
     }
 }
