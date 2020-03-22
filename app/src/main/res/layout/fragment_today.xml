@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/today_constraint_layout"
     android:padding="24dp">
 
 
@@ -29,14 +30,17 @@
             android:visibility="visible" />
     </com.google.android.material.textfield.TextInputLayout>
 
-<!--    <ListView-->
-<!--        android:id="@+id/today_results_list"-->
-<!--        android:layout_width="fill_parent"-->
-<!--        android:layout_height="fill_parent"-->
-<!--        android:drawSelectorOnTop="false"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/today_date_layout" />-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="12dp"
+        android:id="@+id/today_recycler_view"
+        android:background="@drawable/background1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawSelectorOnTop="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/today_date_layout" />
+
+
 
 
 

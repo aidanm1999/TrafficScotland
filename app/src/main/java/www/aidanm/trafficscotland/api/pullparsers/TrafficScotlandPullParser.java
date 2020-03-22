@@ -17,15 +17,10 @@ import www.aidanm.trafficscotland.models.apimodels.TrafficScotlandChannelItem;
 import www.aidanm.trafficscotland.models.enums.TrafficScotlandPullParserScope;
 
 public class TrafficScotlandPullParser {
-    private String stringToParse = "";
     private TrafficScotlandChannel channel = new TrafficScotlandChannel();
     private TrafficScotlandChannelItem currentItem = new TrafficScotlandChannelItem();
     private TrafficScotlandPullParserScope scope = TrafficScotlandPullParserScope.Channel;
     private InputStream stream;
-
-    public void setStringToParse(String input){
-        stringToParse = input;
-    }
 
     public void setStream(InputStream input){
         stream = input;
@@ -34,39 +29,6 @@ public class TrafficScotlandPullParser {
     public TrafficScotlandChannel execute(){
 
         sanitiseStringToParse();
-
-        stringToParse =   "<channel>"+
-        "<title>Traffic Scotland - Roadworks</title>"+
-        "<description>Roadworks currently being undertaken on the road network.</description>"+
-        "<link>https://trafficscotland.org/roadworks/</link>"+
-        "<language />"+
-        "<copyright />"+
-        "<managingEditor />"+
-        "<webMaster />"+
-        "<lastBuildDate>Mon, 16 Mar 2020 00:00:00 GMT</lastBuildDate>"+
-        "<docs>https://trafficscotland.org/rss/</docs>"+
-        "<rating />"+
-        "<generator>Traffic Scotland | www.trafficscotland.org</generator>"+
-        "<ttl>5</ttl>"+
-        "<item>"+
-            "<title>M90 J1 to J3</title>"+
-            "<description>Start Date: Wednesday, 01 January 2020 - 00:00&lt;br /&gt;End Date: Tuesday, 31 March 2020 - 00:00&lt;br /&gt;Delay Information: No reported delay.</description>"+
-            "<link>http://tscot.org/03cFB2019700</link>"+
-            "<point>56.0367767647623 -3.40822032632123</point>"+
-            "<author />"+
-            "<comments />"+
-            "<pubDate>Wed, 01 Jan 2020 00:00:00 GMT</pubDate>"+
-        "</item>"+
-        "<item>"+
-            "<title>M90 J1 to J3</title>"+
-            "<description>Start Date: Wednesday, 01 January 2020 - 00:00&lt;br /&gt;End Date: Tuesday, 31 March 2020 - 00:00&lt;br /&gt;Delay Information: No reported delay.</description>"+
-            "<link>http://tscot.org/03cFB2019701</link>"+
-            "<point>56.0732980724831 -3.38885965373524</point>"+
-            "<author />"+
-            "<comments />"+
-            "<pubDate>Wed, 01 Jan 2020 00:00:00 GMT</pubDate>"+
-        "</item>"+
-    "</channel>";
 
         channel = new TrafficScotlandChannel();
 
@@ -83,12 +45,12 @@ public class TrafficScotlandPullParser {
             int eventType = xpp.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT)
             {
-                if(xpp.getName() != null) {
-                    Log.i("START_TAG", xpp.getName());
-                }
 
                 switch (eventType){
                     case XmlPullParser.START_TAG:
+                        if(xpp.getName() != null) {
+                            Log.i("START_TAG", xpp.getName());
+                        }
                         // This means a new object is being initialised
                         // First check what the object is and if it is CHANNEL, ITEM or COORDINATES
                         // If so, the scope must be changed to know what object is created
@@ -99,9 +61,18 @@ public class TrafficScotlandPullParser {
                             case "item":
                                 scope = TrafficScotlandPullParserScope.Item;
                                 break;
-                            case "point":
+                            case "georss:point":
                                 scope = TrafficScotlandPullParserScope.Coordinates;
-                                // TODO - Add
+                                String latLogString = xpp.nextText();
+                                if(!latLogString.isEmpty()){
+                                    String[] latLongs = latLogString.split(" ");
+                                    try {
+                                        Double lat = Double.parseDouble(latLongs[0]);
+                                        Double lon = Double.parseDouble(latLongs[1]);
+                                        currentItem.setCoordinates(lat, lon);
+                                    } catch (Exception e){}
+                                }
+
                                 scope = TrafficScotlandPullParserScope.Item;
                                 break;
 
@@ -164,7 +135,9 @@ public class TrafficScotlandPullParser {
 
                         break;
                     case XmlPullParser.END_TAG:
-                        Log.i("END_TAG", xpp.getName()); //equalsIgnoreCase(String anotherString)
+                        if(xpp.getName() != null) {
+                            Log.i("END_TAG", xpp.getName());
+                        }
                         if(xpp.getName().toLowerCase().equalsIgnoreCase("item") && scope == TrafficScotlandPullParserScope.Item){
                             // The item is over, add item to list, create new empty item, set new scope back to the channel
                             Log.i("Added", "Channel Item");
@@ -174,6 +147,9 @@ public class TrafficScotlandPullParser {
                         }
                         break;
                     default:
+                        if(xpp.getName() != null) {
+                            Log.i("OTHER_TAG", xpp.getName());
+                        }
                         break;
                 }
 
@@ -199,6 +175,7 @@ public class TrafficScotlandPullParser {
 
 
     public void sanitiseStringToParse(){
+        // TODO - All that is being done is the removal of any 'georss:' in a georss:point tag
 
     }
 }

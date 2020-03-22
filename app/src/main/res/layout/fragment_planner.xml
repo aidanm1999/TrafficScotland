@@ -45,15 +45,24 @@
             android:visibility="visible" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/planner_search_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/planner_end_layout"
+        android:textAllCaps="false"
+        android:text="@string/search"
+        />
+
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="380dp"
         app:cardCornerRadius="12dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/planner_end_layout">
+        app:layout_constraintTop_toBottomOf="@+id/planner_search_submit">
 
         <com.google.android.gms.maps.MapView
             android:layout_height="match_parent"
@@ -63,5 +72,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
     </androidx.cardview.widget.CardView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

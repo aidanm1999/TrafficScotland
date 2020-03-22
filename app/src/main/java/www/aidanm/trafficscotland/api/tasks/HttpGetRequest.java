@@ -3,6 +3,13 @@ package www.aidanm.trafficscotland.api.tasks;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -12,12 +19,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+import www.aidanm.trafficscotland.R;
 import www.aidanm.trafficscotland.api.pullparsers.TrafficScotlandPullParser;
 import www.aidanm.trafficscotland.models.apimodels.AsyncTaskCallInput;
+import www.aidanm.trafficscotland.models.apimodels.TrafficScotlandAPIModel;
 import www.aidanm.trafficscotland.models.apimodels.TrafficScotlandChannel;
+import www.aidanm.trafficscotland.models.interfaces.AsyncResponse;
+import www.aidanm.trafficscotland.models.viewmodels.today.TodayViewModel;
 
-public class HttpGetRequest extends AsyncTask<AsyncTaskCallInput, Void, TrafficScotlandChannel> {
+public class HttpGetRequest extends AsyncTask<TrafficScotlandAPIModel, Void, TrafficScotlandAPIModel> {
+
+    public AsyncResponse delegate = null;
 
     ProgressDialog progressDialog;
     public static final String REQUEST_METHOD = "GET";
@@ -25,11 +40,18 @@ public class HttpGetRequest extends AsyncTask<AsyncTaskCallInput, Void, TrafficS
     public static final int CONNECTION_TIMEOUT = 15000;
     private XmlPullParserFactory xmlFactoryObject;
     private TrafficScotlandChannel channel = new TrafficScotlandChannel();
+    private TodayViewModel todayViewModel;
+    private TextInputEditText dateInput;
+    private EditText editTxt;
+    private Button btn;
+    private ListView list;
+    private ArrayAdapter<String> adapter;
+    private ArrayList<String> arrayList;
 
 
     @Override
-    protected TrafficScotlandChannel doInBackground(AsyncTaskCallInput... params) {
-        String urlString = params[0].getUrl().toString();
+    protected TrafficScotlandAPIModel doInBackground(TrafficScotlandAPIModel... params) {
+        String urlString = params[0].getInput().getUrl().toString();
         String result;
         String inputLine;
 
@@ -55,12 +77,17 @@ public class HttpGetRequest extends AsyncTask<AsyncTaskCallInput, Void, TrafficS
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return channel;
+
+        TrafficScotlandAPIModel model = new TrafficScotlandAPIModel(
+                channel,
+                params[0].getInput()
+        );
+
+        return model;
     }
 
     @Override
-    protected void onPostExecute(TrafficScotlandChannel result) {
-        super.onPostExecute(result);
-        Log.i("hy", "result");
+    protected void onPostExecute(TrafficScotlandAPIModel result) {
+        delegate.processFinish(result);
     }
 }
