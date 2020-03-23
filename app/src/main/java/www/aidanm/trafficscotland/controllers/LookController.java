@@ -60,10 +60,11 @@ import www.aidanm.trafficscotland.models.enums.TrafficScotlandSourceViewRequest;
 import www.aidanm.trafficscotland.models.interfaces.AsyncResponse;
 
 public class LookController extends Fragment implements OnMapReadyCallback, AsyncResponse {
+
+    // region Fields
     private View root;
     private GoogleMap map;
     private MapView mapView;
-    private MarkerOptions place1, place2;
     private TextInputEditText searchForRoadText;
     private List<AutocompletePrediction> predictionList;
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -75,9 +76,8 @@ public class LookController extends Fragment implements OnMapReadyCallback, Asyn
     private FormToastHelper toastHelper;
     private LatLng searchedLatLong;
 
-
     private int ZOOM_LEVEL = 12;
-
+    // endregion
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -103,14 +103,13 @@ public class LookController extends Fragment implements OnMapReadyCallback, Asyn
         filterText.setAdapter(adapter);
         //endregion
 
-        // region Instantiate - Have a Look Button
+        // region Instantiate - Search Button
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 submitForm(v);
             }
         });
-
         // endregion
 
         // region Instantiate - Places Client
@@ -126,7 +125,7 @@ public class LookController extends Fragment implements OnMapReadyCallback, Asyn
         mapView.getMapAsync((OnMapReadyCallback) this);
         // endregion
 
-        // region Instantiate FormToastHelper
+        // region Instantiate - FormToastHelper
         toastHelper = new FormToastHelper(getContext());
         // endregion
 
@@ -168,6 +167,7 @@ public class LookController extends Fragment implements OnMapReadyCallback, Asyn
     // endregion
 
 
+    // region Submit Form Methods
     private void submitForm(View root){
         boolean failedValidation = false;
 
@@ -183,63 +183,62 @@ public class LookController extends Fragment implements OnMapReadyCallback, Asyn
 
         if(!failedValidation){
             searchForRoadText.onEditorAction(EditorInfo.IME_ACTION_DONE);
-            Log.i("HaveALookFormParam", filterText.getText().toString());
-            Log.i("HaveALookFormParam", searchForRoadText.getText().toString());
 
-            final AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
-            final FindAutocompletePredictionsRequest predictionsRequest = FindAutocompletePredictionsRequest
-                    .builder()
-                    .setCountry("GB")
-                    .setTypeFilter(TypeFilter.ADDRESS)
-                    .setSessionToken(token)
-                    .setQuery(searchForRoadText.getText().toString() + " Scotland")
-                    .build();
-
-
-
-            placesClient.findAutocompletePredictions(predictionsRequest).addOnCompleteListener(new OnCompleteListener<FindAutocompletePredictionsResponse>() {
-                @Override
-                public void onComplete(@NonNull Task<FindAutocompletePredictionsResponse> task) {
-                    if(task.isSuccessful()){
-                        FindAutocompletePredictionsResponse predictionsResponse = task.getResult();
-                        if(predictionsResponse != null) {
-                            predictionList = predictionsResponse.getAutocompletePredictions();
-                            if (predictionList.size() > 0) {
-                                String placeId = predictionList.get(0).getPlaceId();
-                                List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
-
-
-                                final FetchPlaceRequest placeRequest = FetchPlaceRequest.newInstance(placeId, placeFields);
-
-                                placesClient.fetchPlace(placeRequest).addOnSuccessListener(new OnSuccessListener<FetchPlaceResponse>() {
-                                    @Override
-                                    public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
-                                        Log.i("api-response", fetchPlaceResponse.getPlace().getName());
-
-                                        searchedLatLong = fetchPlaceResponse.getPlace().getLatLng();
-                                        if (searchedLatLong != null) {
-                                            updateMapCamera();
-                                            callTrafficScotlandApi(filterText.getText().toString());
-                                        }
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        toastHelper.custom("Location does not exist");
-                                    }
-                                });
-                            } else {
-                                toastHelper.custom("No location found");
-                            }
-                        }
-                    } else {
-                        Log.i("error", "prediction fetching task unsuccessful");
-                    }
-                }
-            });
-
+            findPlace();
         }
 
+    }
+
+    private void findPlace(){
+        final AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+        final FindAutocompletePredictionsRequest predictionsRequest = FindAutocompletePredictionsRequest
+                .builder()
+                .setCountry("GB")
+                .setTypeFilter(TypeFilter.ADDRESS)
+                .setSessionToken(token)
+                .setQuery(searchForRoadText.getText().toString() + " Scotland")
+                .build();
+
+        placesClient.findAutocompletePredictions(predictionsRequest).addOnCompleteListener(new OnCompleteListener<FindAutocompletePredictionsResponse>() {
+            @Override
+            public void onComplete(@NonNull Task<FindAutocompletePredictionsResponse> task) {
+                if(task.isSuccessful()){
+                    FindAutocompletePredictionsResponse predictionsResponse = task.getResult();
+                    if(predictionsResponse != null) {
+                        predictionList = predictionsResponse.getAutocompletePredictions();
+                        if (predictionList.size() > 0) {
+                            String placeId = predictionList.get(0).getPlaceId();
+                            List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
+
+
+                            final FetchPlaceRequest placeRequest = FetchPlaceRequest.newInstance(placeId, placeFields);
+
+                            placesClient.fetchPlace(placeRequest).addOnSuccessListener(new OnSuccessListener<FetchPlaceResponse>() {
+                                @Override
+                                public void onSuccess(FetchPlaceResponse fetchPlaceResponse) {
+                                    Log.i("api-response", fetchPlaceResponse.getPlace().getName());
+
+                                    searchedLatLong = fetchPlaceResponse.getPlace().getLatLng();
+                                    if (searchedLatLong != null) {
+                                        updateMapCamera();
+                                        callTrafficScotlandApi(filterText.getText().toString());
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    toastHelper.custom("Location does not exist");
+                                }
+                            });
+                        } else {
+                            toastHelper.custom("No location found");
+                        }
+                    }
+                } else {
+                    Log.i("error", "prediction fetching task unsuccessful");
+                }
+            }
+        });
     }
 
 
@@ -250,12 +249,10 @@ public class LookController extends Fragment implements OnMapReadyCallback, Asyn
                 .center(searchedLatLong)
                 .radius(10000)
                 .strokeColor(Color.rgb(14,21,58)));
-                //.fillColor(Color.BLUE));
     }
 
     private void callTrafficScotlandApi(String filter){
 
-        TrafficScotlandAPIController apiController = new TrafficScotlandAPIController();
         if(filter.equals("Roadwork")){
             TrafficScotlandAPIController controller = new TrafficScotlandAPIController();
             TrafficScotlandSourceViewRequest request = TrafficScotlandSourceViewRequest.Today;
@@ -278,4 +275,6 @@ public class LookController extends Fragment implements OnMapReadyCallback, Asyn
             }
         }
     }
+    // endregion
 }
+
