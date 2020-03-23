@@ -55,12 +55,13 @@ import www.aidanm.trafficscotland.controllers.helpers.FetchURL;
 import www.aidanm.trafficscotland.controllers.helpers.FormToastHelper;
 import www.aidanm.trafficscotland.controllers.helpers.TaskLoadedCallback;
 import www.aidanm.trafficscotland.models.apimodels.TrafficScotlandAPIModel;
+import www.aidanm.trafficscotland.models.apimodels.TrafficScotlandChannel;
 import www.aidanm.trafficscotland.models.apimodels.TrafficScotlandChannelItem;
 import www.aidanm.trafficscotland.models.enums.TrafficScotlandSourceViewRequest;
 import www.aidanm.trafficscotland.models.interfaces.AsyncResponse;
 import www.aidanm.trafficscotland.models.viewmodels.planner.PlannerViewModel;
 
-public class PlannerController extends Fragment implements OnMapReadyCallback, AsyncResponse, TaskLoadedCallback {
+public class PlannerController extends Fragment implements OnMapReadyCallback, AsyncResponse {
 
     // region Fields
     private View root;
@@ -78,12 +79,17 @@ public class PlannerController extends Fragment implements OnMapReadyCallback, A
     private LatLng startLatLong, endLatLong, medianLatLong;
     private MarkerOptions startPlace, endPlace;
     private Polyline currentPolyline;
+    private TrafficScotlandAPIController controller;
 
     private int ZOOM_LEVEL = 12;
     // endregion
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        // region Call Traffic Scotland Controller to get Current Incidents
+        controller = new TrafficScotlandAPIController();
+        // endregion
 
         // region Find all Views By Id
         root = inflater.inflate(R.layout.fragment_planner, container, false);
@@ -242,19 +248,12 @@ public class PlannerController extends Fragment implements OnMapReadyCallback, A
 
 
                                                                     // region Add Road Path
-                                                                    startPlace = new MarkerOptions().position(startLatLong).title("Start");
-                                                                    endPlace = new MarkerOptions().position(endLatLong).title("End");
                                                                     map.addMarker(startPlace);
                                                                     map.addMarker(endPlace);
 
                                                                     String url = getUrl(startPlace.getPosition(), endPlace.getPosition(),"driving");
                                                                     try {
-                                                                        Context context = getContext();
-                                                                        Context i = getActivity().getApplicationContext();
-                                                                        Context c = getActivity().getFragmentManager().findFragmentById(R.id.navigation_journey_planner).getContext();
-
-
-                                                                        new FetchURL(i).execute(url, "driving");
+                                                                        new FetchURL(map).execute(url, "driving");
                                                                     }catch (Exception e){
                                                                         Log.i("", e.toString());
                                                                     }
@@ -263,7 +262,7 @@ public class PlannerController extends Fragment implements OnMapReadyCallback, A
 
 
                                                                     // region Add Incidents and Roadworks
-
+                                                                    addIncidentsAndRoadworks();
                                                                     // endregion
                                                                 }
                                                             }).addOnFailureListener(new OnFailureListener() {
@@ -335,36 +334,22 @@ public class PlannerController extends Fragment implements OnMapReadyCallback, A
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(medianLatLong, ZOOM_LEVEL));
     }
 
-    private void callTrafficScotlandApi(String filter){
+    private void addIncidentsAndRoadworks(){
+        TrafficScotlandSourceViewRequest request = TrafficScotlandSourceViewRequest.Journey;
+        controller.getCurrentIncidents(request, this);
+        controller.getRoadWorks(request, this);
+//        TrafficScotlandSourceViewRequest request = TrafficScotlandSourceViewRequest.Today;
+//        controller.getPlannedRoadWorks(request, this);
 
-//        TrafficScotlandAPIController apiController = new TrafficScotlandAPIController();
-//        if(filter.equals("Roadwork")){
-//            TrafficScotlandAPIController controller = new TrafficScotlandAPIController();
-//            TrafficScotlandSourceViewRequest request = TrafficScotlandSourceViewRequest.Today;
-//            controller.getRoadWorks(request, this);
-//        } else {
-//            TrafficScotlandAPIController controller = new TrafficScotlandAPIController();
-//            TrafficScotlandSourceViewRequest request = TrafficScotlandSourceViewRequest.Today;
-//            controller.getCurrentIncidents(request, this);
-//        }
     }
 
     @Override
     public void processFinish(TrafficScotlandAPIModel output) {
-//        for (TrafficScotlandChannelItem item : output.getChannel().getChannelItems()) {
-//            LatLng itemLatLong = item.getCoordinates();
-//            if (SphericalUtil.computeDistanceBetween(item.getCoordinates(), searchedLatLong)<10000) {
-//                map.addMarker(new MarkerOptions().position(item.getCoordinates())
-//                        .title(item.getTitle()));
-//            }
-//        }
-    }
-
-    @Override
-    public void onTaskDone(Object... values) {
-        if (currentPolyline != null)
-            currentPolyline.remove();
-        currentPolyline = map.addPolyline((PolylineOptions) values[0]);
+        for (TrafficScotlandChannelItem item : output.getChannel().getChannelItems()) {
+            
+            map.addMarker(new MarkerOptions().position(item.getCoordinates())
+                    .title(item.getTitle()));
+        }
     }
     // endregion
 }

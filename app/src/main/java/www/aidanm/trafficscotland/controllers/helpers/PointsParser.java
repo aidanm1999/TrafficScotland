@@ -22,8 +22,8 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
     String directionMode = "driving";
     private GoogleMap map;
 
-    public PointsParser(Context mContext, String directionMode) {
-        this.taskCallback = (TaskLoadedCallback) mContext;
+    public PointsParser(GoogleMap map, String directionMode) {
+        this.map = map;
         this.directionMode = directionMode;
     }
 
@@ -78,14 +78,14 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
                 lineOptions.color(Color.MAGENTA);
             } else {
                 lineOptions.width(20);
-                lineOptions.color(Color.BLUE);
+                lineOptions.color(Color.rgb(14,21,58));
             }
             Log.d("mylog", "onPostExecute lineoptions decoded");
         }
 
         // Drawing polyline in the Google Map for the i-th route
         if (lineOptions != null) {
-            //map.addPolyline(lineOptions);
+            map.addPolyline(lineOptions);
             // Todo - this has been modified
             //taskCallback.onTaskDone(lineOptions);
 

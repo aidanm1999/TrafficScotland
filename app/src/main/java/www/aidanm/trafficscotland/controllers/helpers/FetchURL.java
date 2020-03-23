@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.android.gms.maps.GoogleMap;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,9 +16,10 @@ import java.net.URL;
 public class FetchURL extends AsyncTask<String, Void, String> {
     Context mContext;
     String directionMode = "driving";
+    private GoogleMap map;
 
-    public FetchURL(Context mContext) {
-        this.mContext = mContext;
+    public FetchURL(GoogleMap map) {
+        this.map = map;
     }
 
     @Override
@@ -37,7 +40,7 @@ public class FetchURL extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        PointsParser parserTask = new PointsParser(mContext, directionMode);
+        PointsParser parserTask = new PointsParser(map, directionMode);
         // Invokes the thread for parsing the JSON data
         parserTask.execute(s);
     }

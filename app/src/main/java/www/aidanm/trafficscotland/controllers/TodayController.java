@@ -56,7 +56,6 @@ public class TodayController extends Fragment implements AsyncResponse {
         TrafficScotlandAPIController controller = new TrafficScotlandAPIController();
         TrafficScotlandSourceViewRequest request = TrafficScotlandSourceViewRequest.Today;
         controller.getCurrentIncidents(request, this);
-
         // endregion
 
         // region Find all Views By Id
