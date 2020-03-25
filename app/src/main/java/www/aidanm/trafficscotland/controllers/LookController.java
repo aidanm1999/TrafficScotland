@@ -169,6 +169,8 @@ public class LookController extends Fragment implements OnMapReadyCallback, Asyn
 
     // region Submit Form Methods
     private void submitForm(View root){
+
+        // region Form Validation
         boolean failedValidation = false;
 
         if(filterText.getText().toString() == null || filterText.getText().toString().equals("")){
@@ -180,6 +182,7 @@ public class LookController extends Fragment implements OnMapReadyCallback, Asyn
             toastHelper.inputError("Search");
             failedValidation = true;
         }
+        // endregion
 
         if(!failedValidation){
             searchForRoadText.onEditorAction(EditorInfo.IME_ACTION_DONE);
@@ -255,11 +258,11 @@ public class LookController extends Fragment implements OnMapReadyCallback, Asyn
 
         if(filter.equals("Roadwork")){
             TrafficScotlandAPIController controller = new TrafficScotlandAPIController();
-            TrafficScotlandSourceViewRequest request = TrafficScotlandSourceViewRequest.Today;
+            TrafficScotlandSourceViewRequest request = TrafficScotlandSourceViewRequest.Look;
             controller.getRoadWorks(request, this);
         } else {
             TrafficScotlandAPIController controller = new TrafficScotlandAPIController();
-            TrafficScotlandSourceViewRequest request = TrafficScotlandSourceViewRequest.Today;
+            TrafficScotlandSourceViewRequest request = TrafficScotlandSourceViewRequest.Look;
             controller.getCurrentIncidents(request, this);
         }
     }
@@ -268,7 +271,6 @@ public class LookController extends Fragment implements OnMapReadyCallback, Asyn
     @Override
     public void processFinish(TrafficScotlandAPIModel output) {
         for (TrafficScotlandChannelItem item : output.getChannel().getChannelItems()) {
-            LatLng itemLatLong = item.getCoordinates();
             if (SphericalUtil.computeDistanceBetween(item.getCoordinates(), searchedLatLong)<10000) {
                 map.addMarker(new MarkerOptions().position(item.getCoordinates())
                         .title(item.getTitle()));

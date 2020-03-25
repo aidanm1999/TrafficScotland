@@ -1,4 +1,4 @@
-package www.aidanm.trafficscotland.controllers.helpers;
+package www.aidanm.trafficscotland.api.pullparsers;
 
 import com.google.android.gms.maps.model.LatLng;
 

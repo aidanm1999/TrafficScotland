@@ -1,8 +1,6 @@
 package www.aidanm.trafficscotland.api.controllers;
 
-import java.nio.channels.Channel;
-
-import www.aidanm.trafficscotland.api.tasks.HttpGetRequest;
+import www.aidanm.trafficscotland.api.tasks.HttpGetTrafficScotlandRequest;
 import www.aidanm.trafficscotland.controllers.LookController;
 import www.aidanm.trafficscotland.controllers.PlannerController;
 import www.aidanm.trafficscotland.controllers.TodayController;
@@ -23,7 +21,7 @@ public class TrafficScotlandAPIController {
 
 
     public void getCurrentIncidents(TrafficScotlandSourceViewRequest viewRequest, TodayController controller){
-        HttpGetRequest getRequest = new HttpGetRequest();
+        HttpGetTrafficScotlandRequest getRequest = new HttpGetTrafficScotlandRequest();
         AsyncTaskCallInput input = new AsyncTaskCallInput(
                 AsyncTaskCallUrlType.TrafficScotland_CurrentIncidents,
                 currentIncidentsUrl,
@@ -37,7 +35,7 @@ public class TrafficScotlandAPIController {
     }
 
     public void getCurrentIncidents(TrafficScotlandSourceViewRequest viewRequest, LookController controller){
-        HttpGetRequest getRequest = new HttpGetRequest();
+        HttpGetTrafficScotlandRequest getRequest = new HttpGetTrafficScotlandRequest();
         AsyncTaskCallInput input = new AsyncTaskCallInput(
                 AsyncTaskCallUrlType.TrafficScotland_CurrentIncidents,
                 currentIncidentsUrl,
@@ -49,10 +47,9 @@ public class TrafficScotlandAPIController {
         getRequest.delegate = controller;
         getRequest.execute(model);
     }
-
 
     public void getCurrentIncidents(TrafficScotlandSourceViewRequest viewRequest, PlannerController controller){
-        HttpGetRequest getRequest = new HttpGetRequest();
+        HttpGetTrafficScotlandRequest getRequest = new HttpGetTrafficScotlandRequest();
         AsyncTaskCallInput input = new AsyncTaskCallInput(
                 AsyncTaskCallUrlType.TrafficScotland_CurrentIncidents,
                 currentIncidentsUrl,
@@ -67,8 +64,23 @@ public class TrafficScotlandAPIController {
 
 
 
+
+
+    public void getRoadWorks(TrafficScotlandSourceViewRequest viewRequest, TodayController controller){
+        HttpGetTrafficScotlandRequest getRequest = new HttpGetTrafficScotlandRequest();
+        AsyncTaskCallInput input = new AsyncTaskCallInput(
+                AsyncTaskCallUrlType.TrafficScotland_Roadworks,
+                roadWorksUrl,
+                viewRequest
+        );
+
+        TrafficScotlandAPIModel model = new TrafficScotlandAPIModel( new TrafficScotlandChannel(), input );
+        getRequest.delegate = controller;
+        getRequest.execute(model);
+    }
+
     public void getRoadWorks(TrafficScotlandSourceViewRequest viewRequest, LookController controller){
-        HttpGetRequest getRequest = new HttpGetRequest();
+        HttpGetTrafficScotlandRequest getRequest = new HttpGetTrafficScotlandRequest();
         AsyncTaskCallInput input = new AsyncTaskCallInput(
                 AsyncTaskCallUrlType.TrafficScotland_Roadworks,
                 roadWorksUrl,
@@ -81,7 +93,7 @@ public class TrafficScotlandAPIController {
     }
 
     public void getRoadWorks(TrafficScotlandSourceViewRequest viewRequest, PlannerController controller){
-        HttpGetRequest getRequest = new HttpGetRequest();
+        HttpGetTrafficScotlandRequest getRequest = new HttpGetTrafficScotlandRequest();
         AsyncTaskCallInput input = new AsyncTaskCallInput(
                 AsyncTaskCallUrlType.TrafficScotland_Roadworks,
                 roadWorksUrl,
@@ -93,8 +105,12 @@ public class TrafficScotlandAPIController {
         getRequest.execute(model);
     }
 
+
+
+
+
     public void getPlannedRoadWorks(TrafficScotlandSourceViewRequest viewRequest){
-        HttpGetRequest getRequest = new HttpGetRequest();
+        HttpGetTrafficScotlandRequest getRequest = new HttpGetTrafficScotlandRequest();
         AsyncTaskCallInput input = new AsyncTaskCallInput(
                 AsyncTaskCallUrlType.TrafficScotland_PlannedRoadworks,
                 plannedRoadWorksUrl,

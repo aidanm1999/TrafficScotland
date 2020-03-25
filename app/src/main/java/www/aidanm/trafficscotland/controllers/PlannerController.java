@@ -1,7 +1,5 @@
 package www.aidanm.trafficscotland.controllers;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,11 +18,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,25 +37,18 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.maps.android.SphericalUtil;
-
-import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.List;
 
-import www.aidanm.trafficscotland.MainActivity;
 import www.aidanm.trafficscotland.R;
 import www.aidanm.trafficscotland.api.controllers.TrafficScotlandAPIController;
-import www.aidanm.trafficscotland.controllers.helpers.FetchURL;
+import www.aidanm.trafficscotland.api.tasks.HttpGetGoogleMapA2BPlotterRequest;
 import www.aidanm.trafficscotland.controllers.helpers.FormToastHelper;
-import www.aidanm.trafficscotland.controllers.helpers.TaskLoadedCallback;
 import www.aidanm.trafficscotland.models.apimodels.TrafficScotlandAPIModel;
-import www.aidanm.trafficscotland.models.apimodels.TrafficScotlandChannel;
 import www.aidanm.trafficscotland.models.apimodels.TrafficScotlandChannelItem;
 import www.aidanm.trafficscotland.models.enums.TrafficScotlandSourceViewRequest;
 import www.aidanm.trafficscotland.models.interfaces.AsyncResponse;
-import www.aidanm.trafficscotland.models.viewmodels.planner.PlannerViewModel;
 
 public class PlannerController extends Fragment implements OnMapReadyCallback, AsyncResponse {
 
@@ -246,14 +235,9 @@ public class PlannerController extends Fragment implements OnMapReadyCallback, A
                                                                     calculateMedianLocation();
                                                                     updateMapCamera();
 
-
-                                                                    // region Add Road Path
-                                                                    map.addMarker(startPlace);
-                                                                    map.addMarker(endPlace);
-
-                                                                    String url = getUrl(startPlace.getPosition(), endPlace.getPosition(),"driving");
+                                                                    String url = getUrl(startLatLong, endLatLong,"driving");
                                                                     try {
-                                                                        new FetchURL(map).execute(url, "driving");
+                                                                        new HttpGetGoogleMapA2BPlotterRequest(map).execute(url, "driving");
                                                                     }catch (Exception e){
                                                                         Log.i("", e.toString());
                                                                     }
@@ -305,17 +289,11 @@ public class PlannerController extends Fragment implements OnMapReadyCallback, A
 
 
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {
-        // Origin of route
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-        // Destination of route
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-        // Mode
         String mode = "mode=" + directionMode;
-        // Building the parameters to the web service
         String parameters = str_origin + "&" + str_dest + "&" + mode;
-        // Output format
         String output = "json";
-        // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + "AIzaSyB-wEH8r3o-6Ajme-I33bBUGx-9wuxGgyI";// getString(R.string.google_maps_key);
         return url;
     }
@@ -338,15 +316,12 @@ public class PlannerController extends Fragment implements OnMapReadyCallback, A
         TrafficScotlandSourceViewRequest request = TrafficScotlandSourceViewRequest.Journey;
         controller.getCurrentIncidents(request, this);
         controller.getRoadWorks(request, this);
-//        TrafficScotlandSourceViewRequest request = TrafficScotlandSourceViewRequest.Today;
-//        controller.getPlannedRoadWorks(request, this);
 
     }
 
     @Override
     public void processFinish(TrafficScotlandAPIModel output) {
         for (TrafficScotlandChannelItem item : output.getChannel().getChannelItems()) {
-            
             map.addMarker(new MarkerOptions().position(item.getCoordinates())
                     .title(item.getTitle()));
         }

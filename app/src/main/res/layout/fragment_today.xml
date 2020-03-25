@@ -29,19 +29,12 @@
             android:singleLine="true"
             android:visibility="visible" />
     </com.google.android.material.textfield.TextInputLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="12dp"
-        android:id="@+id/today_recycler_view"
-        android:background="@drawable/background1"
-        android:layout_width="fill_parent"
+    <ListView
+        android:id="@+id/today_list_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawSelectorOnTop="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/today_date_layout" />
+        app:layout_constraintTop_toBottomOf="@id/today_date_layout">
 
-
-
-
+    </ListView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

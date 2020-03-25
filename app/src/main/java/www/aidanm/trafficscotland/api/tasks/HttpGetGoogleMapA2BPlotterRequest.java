@@ -1,4 +1,4 @@
-package www.aidanm.trafficscotland.controllers.helpers;
+package www.aidanm.trafficscotland.api.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -13,12 +13,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class FetchURL extends AsyncTask<String, Void, String> {
+import www.aidanm.trafficscotland.api.pullparsers.PointsParser;
+
+public class HttpGetGoogleMapA2BPlotterRequest extends AsyncTask<String, Void, String> {
     Context mContext;
     String directionMode = "driving";
     private GoogleMap map;
 
-    public FetchURL(GoogleMap map) {
+    public HttpGetGoogleMapA2BPlotterRequest(GoogleMap map) {
         this.map = map;
     }
 

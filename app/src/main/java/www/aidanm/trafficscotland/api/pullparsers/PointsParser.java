@@ -1,7 +1,6 @@
-package www.aidanm.trafficscotland.controllers.helpers;
+package www.aidanm.trafficscotland.api.pullparsers;
 
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -15,6 +14,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import www.aidanm.trafficscotland.models.interfaces.TaskLoadedCallback;
 
 
 public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
@@ -77,7 +78,7 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
                 lineOptions.width(10);
                 lineOptions.color(Color.MAGENTA);
             } else {
-                lineOptions.width(20);
+                lineOptions.width(10);
                 lineOptions.color(Color.rgb(14,21,58));
             }
             Log.d("mylog", "onPostExecute lineoptions decoded");
@@ -86,9 +87,7 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
         // Drawing polyline in the Google Map for the i-th route
         if (lineOptions != null) {
             map.addPolyline(lineOptions);
-            // Todo - this has been modified
             //taskCallback.onTaskDone(lineOptions);
-
         } else {
             Log.d("mylog", "without Polylines drawn");
         }
