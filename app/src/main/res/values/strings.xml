@@ -1,4 +1,6 @@
 <resources>
+    <!--Developer: Aidan Marshall-->
+    <!--Student ID: S1828601-->
     <string name="app_name">Traffic Scotland</string>
     <string name="title_today_in_transit">Today in Transit</string>
     <string name="title_have_a_look">Have a Look</string>

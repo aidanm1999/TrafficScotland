@@ -5,6 +5,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.Calendar;
 import java.util.Date;
 
+import www.aidanm.trafficscotland.models.enums.AsyncTaskCallUrlType;
+
 public class TrafficScotlandChannelItem {
 
     private String Title;
@@ -14,6 +16,7 @@ public class TrafficScotlandChannelItem {
     private Date DatePublished;
     private Date StartDate;
     private Date EndDate;
+    private AsyncTaskCallUrlType Type;
 
 
     // Empty Constructor
@@ -38,7 +41,8 @@ public class TrafficScotlandChannelItem {
                                       TrafficScotlandCoordinates coordinates,
                                       Date datePublished,
                                       Date startDate,
-                                      Date endDate)
+                                      Date endDate,
+                                      AsyncTaskCallUrlType type)
     {
         Title = title;
         Description = description;
@@ -47,6 +51,7 @@ public class TrafficScotlandChannelItem {
         DatePublished = datePublished;
         StartDate = startDate;
         EndDate = endDate;
+        Type = type;
     }
 
 
@@ -108,5 +113,13 @@ public class TrafficScotlandChannelItem {
 
     public void setEndDate(Date endDate) {
         EndDate = endDate;
+    }
+
+    public AsyncTaskCallUrlType getType() {
+        return Type;
+    }
+
+    public void setType(AsyncTaskCallUrlType type) {
+        Type = type;
     }
 }

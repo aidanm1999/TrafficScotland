@@ -185,7 +185,6 @@ public class LookController extends Fragment implements OnMapReadyCallback, Asyn
 
         if(!failedValidation){
             searchForRoadText.onEditorAction(EditorInfo.IME_ACTION_DONE);
-
             findPlace();
         }
 

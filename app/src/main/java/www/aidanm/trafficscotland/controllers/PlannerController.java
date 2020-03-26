@@ -158,12 +158,12 @@ public class PlannerController extends Fragment implements OnMapReadyCallback, A
         boolean failedValidation = false;
 
         if(startText.getText().toString() == null || startText.getText().toString().equals("")){
-            toastHelper.inputError("Filter");
+            toastHelper.inputError("Start");
             failedValidation = true;
         }
 
         if(endText.getText().toString() == null || endText.getText().toString().equals("")){
-            toastHelper.inputError("Search");
+            toastHelper.inputError("End");
             failedValidation = true;
         }
 

@@ -2,23 +2,17 @@ package www.aidanm.trafficscotland.controllers;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,12 +48,13 @@ public class TodayController extends Fragment implements AsyncResponse {
     private ListView listView;
     private TodayController todayController = this;
     private String selectedDateString;
+    private ArrayList<TrafficScotlandChannelItem> requestModels = new ArrayList<>();
 
 
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+                             final ViewGroup container, Bundle savedInstanceState) {
 
 
 
@@ -68,6 +63,8 @@ public class TodayController extends Fragment implements AsyncResponse {
         TrafficScotlandSourceViewRequest request = TrafficScotlandSourceViewRequest.Today;
         controller.getCurrentIncidents(request, this);
         controller.getRoadWorks(request, this);
+
+
         // endregion
 
         // region Find all Views By Id
@@ -102,12 +99,16 @@ public class TodayController extends Fragment implements AsyncResponse {
 
                     TrafficScotlandAPIController controller = new TrafficScotlandAPIController();
                     TrafficScotlandSourceViewRequest viewRequest = TrafficScotlandSourceViewRequest.Today;
-                    if (!dateInput.getText().toString().equals(dpHelper.today())) {
-
+                    String dateIn = dateInput.getText().toString();
+                    String today = dpHelper.today();
+                    if (!dateIn.equals(today)) {
+                        // Any future dates
                         controller.getPlannedRoadWorks(viewRequest, todayController);
                     } else {
-
+                        // Today
+                        controller.getCurrentIncidents(viewRequest, todayController);
                         controller.getRoadWorks(viewRequest, todayController);
+
                     }
                 } else {
                     Toast toast = Toast.makeText(getContext(),
@@ -134,35 +135,36 @@ public class TodayController extends Fragment implements AsyncResponse {
 
     @Override
     public void processFinish(TrafficScotlandAPIModel output) {
-        // Todo - Add a circular progress indicator and remove when processFinish runs
 
-        if(output.getInput().getUrlType() == AsyncTaskCallUrlType.TrafficScotland_PlannedRoadworks){
-            ArrayList<TrafficScotlandChannelItem> tempChannelItems = new ArrayList<>();
-            DatePickerHelper dpHelper = new DatePickerHelper(dateInput);
-            for(TrafficScotlandChannelItem item : output.getChannel().getChannelItems()){
-                String itemDate = dpHelper.formatDate(item.getDatePublished()); // TODO - It is not date published
-                if(itemDate.toString().equals(selectedDateString.toString())) {
-                    tempChannelItems.add(item);
-                }
-            }
-            output.getChannel().setChannelItems(tempChannelItems);
-
+        for(TrafficScotlandChannelItem item : output.getChannel().getChannelItems()){
+            item.setType(output.getInput().getUrlType());
+            requestModels.add(item);
         }
 
-        MyAdapter adapter = new MyAdapter(this.getContext(), output);
-        listView.setAdapter(adapter);
+
+
+        if(output.getInput().getUrlType() != AsyncTaskCallUrlType.TrafficScotland_CurrentIncidents){
+            // If all requests have been completed, display all requests to the view
+            // There can be a max of 2 requests, one from the output and one from the tempModel
+
+            ListAdapter adapter = new ListAdapter(this.getContext(), requestModels);
+            listView.setAdapter(adapter);
+            requestModels = new ArrayList<>();
+        }
+
+
     }
 
 
-    class MyAdapter extends ArrayAdapter<TrafficScotlandChannelItem> {
+    class ListAdapter extends ArrayAdapter<TrafficScotlandChannelItem> {
 
         private Context context;
-        private TrafficScotlandAPIModel output;
+        private List<TrafficScotlandChannelItem> allItems;
 
-        MyAdapter (Context c, TrafficScotlandAPIModel output) {
-            super(c, R.layout.layout_today_card, R.id.textView1, output.getChannel().getChannelItems());
+        ListAdapter (Context c, ArrayList<TrafficScotlandChannelItem> allItems) {
+            super(c, R.layout.layout_today_card, R.id.textView1, allItems);
             this.context = c;
-            this.output = output;
+            this.allItems = allItems;
         }
 
         @NonNull
@@ -175,10 +177,10 @@ public class TodayController extends Fragment implements AsyncResponse {
             TextView currentDescription = row.findViewById(R.id.textView2);
             TextView currentTypeText = row.findViewById(R.id.today_card_type_text);
 
-            if(output.getInput().getUrlType() == AsyncTaskCallUrlType.TrafficScotland_CurrentIncidents){
+            if(allItems.get(position).getType() == AsyncTaskCallUrlType.TrafficScotland_CurrentIncidents){
                 currentImage.setImageResource(R.drawable.ic_car_crash_solid);
                 currentTypeText.setText("Incident");
-            } else if(output.getInput().getUrlType() == AsyncTaskCallUrlType.TrafficScotland_Roadworks) {
+            } else if(allItems.get(position).getType() == AsyncTaskCallUrlType.TrafficScotland_Roadworks) {
                 currentImage.setImageResource(R.drawable.ic_snowplow_solid);
                 currentTypeText.setText("Roadwork");
             } else {
@@ -186,8 +188,8 @@ public class TodayController extends Fragment implements AsyncResponse {
                 currentTypeText.setText("Planned");
             }
 
-            currentTitle.setText(output.getChannel().getChannelItems().get(position).getTitle());
-            currentDescription.setText(output.getChannel().getChannelItems().get(position).getDescription());
+            currentTitle.setText(allItems.get(position).getTitle());
+            currentDescription.setText(allItems.get(position).getDescription());
 
 
             return row;

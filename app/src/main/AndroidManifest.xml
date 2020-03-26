@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Developer: Aidan Marshall-->
+<!--Student ID: S1828601-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="www.aidanm.trafficscotland">
 
