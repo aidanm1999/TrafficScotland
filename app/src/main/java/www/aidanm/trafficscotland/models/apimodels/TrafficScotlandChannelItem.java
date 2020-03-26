@@ -1,5 +1,8 @@
 package www.aidanm.trafficscotland.models.apimodels;
 
+// Developer: Aidan Marshall
+// Student ID: S1828601
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Calendar;

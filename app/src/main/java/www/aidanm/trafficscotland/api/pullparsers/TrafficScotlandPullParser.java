@@ -1,5 +1,8 @@
 package www.aidanm.trafficscotland.api.pullparsers;
 
+// Developer: Aidan Marshall
+// Student ID: S1828601
+
 import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;

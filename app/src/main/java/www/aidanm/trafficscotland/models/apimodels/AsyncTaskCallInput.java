@@ -1,5 +1,8 @@
 package www.aidanm.trafficscotland.models.apimodels;
 
+// Developer: Aidan Marshall
+// Student ID: S1828601
+
 import www.aidanm.trafficscotland.models.enums.AsyncTaskCallUrlType;
 import www.aidanm.trafficscotland.models.enums.TrafficScotlandSourceViewRequest;
 

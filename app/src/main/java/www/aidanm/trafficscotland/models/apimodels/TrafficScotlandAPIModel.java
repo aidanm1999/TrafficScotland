@@ -1,5 +1,8 @@
 package www.aidanm.trafficscotland.models.apimodels;
 
+// Developer: Aidan Marshall
+// Student ID: S1828601
+
 public class TrafficScotlandAPIModel {
     private TrafficScotlandChannel channel;
     private AsyncTaskCallInput input;

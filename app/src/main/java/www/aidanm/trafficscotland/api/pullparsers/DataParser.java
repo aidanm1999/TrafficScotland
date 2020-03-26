@@ -1,5 +1,8 @@
 package www.aidanm.trafficscotland.api.pullparsers;
 
+// Developer: Aidan Marshall
+// Student ID: S1828601
+
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -53,10 +56,7 @@ public class DataParser {
     }
 
 
-    /**
-     * Method to decode polyline points
-     * Courtesy : https://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java
-     */
+
     private List<LatLng> decodePoly(String encoded) {
 
         List<LatLng> poly = new ArrayList<>();

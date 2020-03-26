@@ -1,5 +1,8 @@
 package www.aidanm.trafficscotland.controllers;
 
+// Developer: Aidan Marshall
+// Student ID: S1828601
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
