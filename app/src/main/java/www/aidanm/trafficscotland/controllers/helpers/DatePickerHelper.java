@@ -15,7 +15,6 @@ import java.util.TimeZone;
 public class DatePickerHelper {
 
     private TextInputEditText _dateInput;
-    private long _today;
     private long _startDate;
     private long _endDate;
     private Calendar _calendar;
@@ -68,7 +67,11 @@ public class DatePickerHelper {
     }
 
     public boolean validate(long dateToValidate){
-        return dateToValidate > _today;
+        if(dateToValidate > _startDate){
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
