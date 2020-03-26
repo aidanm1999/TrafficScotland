@@ -28,7 +28,6 @@ public class TrafficScotlandPullParser {
 
     public TrafficScotlandChannel execute(){
 
-        sanitiseStringToParse();
 
         channel = new TrafficScotlandChannel();
 
@@ -141,6 +140,7 @@ public class TrafficScotlandPullParser {
                         if(xpp.getName().toLowerCase().equalsIgnoreCase("item") && scope == TrafficScotlandPullParserScope.Item){
                             // The item is over, add item to list, create new empty item, set new scope back to the channel
                             Log.i("Added", "Channel Item");
+                            currentItem.setDescription(currentItem.getDescription().replaceAll("<br />", "\\\n"));
                             channel.addItem(currentItem);
                             currentItem = new TrafficScotlandChannelItem();
                             scope = TrafficScotlandPullParserScope.Channel;
@@ -171,11 +171,5 @@ public class TrafficScotlandPullParser {
 
 
         return channel;
-    }
-
-
-    public void sanitiseStringToParse(){
-        // TODO - All that is being done is the removal of any 'georss:' in a georss:point tag
-
     }
 }

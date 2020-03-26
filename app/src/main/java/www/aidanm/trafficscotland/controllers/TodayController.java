@@ -38,10 +38,11 @@ import www.aidanm.trafficscotland.R;
 import www.aidanm.trafficscotland.api.controllers.TrafficScotlandAPIController;
 import www.aidanm.trafficscotland.controllers.helpers.DatePickerHelper;
 import www.aidanm.trafficscotland.models.apimodels.TrafficScotlandAPIModel;
+import www.aidanm.trafficscotland.models.apimodels.TrafficScotlandChannel;
 import www.aidanm.trafficscotland.models.apimodels.TrafficScotlandChannelItem;
+import www.aidanm.trafficscotland.models.enums.AsyncTaskCallUrlType;
 import www.aidanm.trafficscotland.models.enums.TrafficScotlandSourceViewRequest;
 import www.aidanm.trafficscotland.models.interfaces.AsyncResponse;
-import www.aidanm.trafficscotland.models.viewmodels.today.TodayViewModel;
 
 public class TodayController extends Fragment implements AsyncResponse {
     private TextInputEditText dateInput;
@@ -51,6 +52,8 @@ public class TodayController extends Fragment implements AsyncResponse {
     private ArrayAdapter<String> adapter;
     private ArrayList<String> arrayList;
     private ListView listView;
+    private TodayController todayController = this;
+    private String selectedDateString;
 
 
 
@@ -94,7 +97,18 @@ public class TodayController extends Fragment implements AsyncResponse {
             @Override
             public void onPositiveButtonClick(Object selection) {
                 if (dpHelper.validate(Long.parseLong(selection.toString()))) {
-                    dateInput.setText(dp.getHeaderText());
+                    selectedDateString = dp.getHeaderText();
+                    dateInput.setText(selectedDateString);
+
+                    TrafficScotlandAPIController controller = new TrafficScotlandAPIController();
+                    TrafficScotlandSourceViewRequest viewRequest = TrafficScotlandSourceViewRequest.Today;
+                    if (!dateInput.getText().toString().equals(dpHelper.today())) {
+
+                        controller.getPlannedRoadWorks(viewRequest, todayController);
+                    } else {
+
+                        controller.getRoadWorks(viewRequest, todayController);
+                    }
                 } else {
                     Toast toast = Toast.makeText(getContext(),
                             "Please don't select a date prior to today",
@@ -121,7 +135,21 @@ public class TodayController extends Fragment implements AsyncResponse {
     @Override
     public void processFinish(TrafficScotlandAPIModel output) {
         // Todo - Add a circular progress indicator and remove when processFinish runs
-        MyAdapter adapter = new MyAdapter(this.getContext(), output.getChannel().getChannelItems());
+
+        if(output.getInput().getUrlType() == AsyncTaskCallUrlType.TrafficScotland_PlannedRoadworks){
+            ArrayList<TrafficScotlandChannelItem> tempChannelItems = new ArrayList<>();
+            DatePickerHelper dpHelper = new DatePickerHelper(dateInput);
+            for(TrafficScotlandChannelItem item : output.getChannel().getChannelItems()){
+                String itemDate = dpHelper.formatDate(item.getDatePublished()); // TODO - It is not date published
+                if(itemDate.toString().equals(selectedDateString.toString())) {
+                    tempChannelItems.add(item);
+                }
+            }
+            output.getChannel().setChannelItems(tempChannelItems);
+
+        }
+
+        MyAdapter adapter = new MyAdapter(this.getContext(), output);
         listView.setAdapter(adapter);
     }
 
@@ -129,12 +157,12 @@ public class TodayController extends Fragment implements AsyncResponse {
     class MyAdapter extends ArrayAdapter<TrafficScotlandChannelItem> {
 
         private Context context;
-        private List<TrafficScotlandChannelItem> items;
+        private TrafficScotlandAPIModel output;
 
-        MyAdapter (Context c, List<TrafficScotlandChannelItem> items) {
-            super(c, R.layout.layout_today_card, R.id.textView1, items);
+        MyAdapter (Context c, TrafficScotlandAPIModel output) {
+            super(c, R.layout.layout_today_card, R.id.textView1, output.getChannel().getChannelItems());
             this.context = c;
-            this.items = items;
+            this.output = output;
         }
 
         @NonNull
@@ -142,12 +170,24 @@ public class TodayController extends Fragment implements AsyncResponse {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             LayoutInflater layoutInflater = (LayoutInflater) context.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View row = layoutInflater.inflate(R.layout.layout_today_card, parent, false);
-            ImageView images = row.findViewById(R.id.image);
-            TextView myTitle = row.findViewById(R.id.textView1);
-            TextView myDescription = row.findViewById(R.id.textView2);
+            ImageView currentImage = row.findViewById(R.id.image);
+            TextView currentTitle = row.findViewById(R.id.textView1);
+            TextView currentDescription = row.findViewById(R.id.textView2);
+            TextView currentTypeText = row.findViewById(R.id.today_card_type_text);
 
-            myTitle.setText(items.get(position).getTitle());
-            myDescription.setText(items.get(position).getDescription());
+            if(output.getInput().getUrlType() == AsyncTaskCallUrlType.TrafficScotland_CurrentIncidents){
+                currentImage.setImageResource(R.drawable.ic_car_crash_solid);
+                currentTypeText.setText("Incident");
+            } else if(output.getInput().getUrlType() == AsyncTaskCallUrlType.TrafficScotland_Roadworks) {
+                currentImage.setImageResource(R.drawable.ic_snowplow_solid);
+                currentTypeText.setText("Roadwork");
+            } else {
+                currentImage.setImageResource(R.drawable.ic_calendar_check_regular);
+                currentTypeText.setText("Planned");
+            }
+
+            currentTitle.setText(output.getChannel().getChannelItems().get(position).getTitle());
+            currentDescription.setText(output.getChannel().getChannelItems().get(position).getDescription());
 
 
             return row;

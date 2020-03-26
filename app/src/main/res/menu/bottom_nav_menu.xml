@@ -16,9 +16,4 @@
         android:icon="@drawable/ic_near_me_black_24dp"
         android:title="@string/title_short_journey_planner" />
 
-    <item
-        android:id="@+id/navigation_alternatives"
-        android:icon="@drawable/ic_train_black_24dp"
-        android:title="@string/title_short_alternatives" />
-
 </menu>

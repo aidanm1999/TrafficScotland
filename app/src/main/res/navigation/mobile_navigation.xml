@@ -23,10 +23,4 @@
         android:label="@string/title_journey_planner"
         tools:layout="@layout/fragment_planner" />
 
-    <fragment
-        android:id="@+id/navigation_alternatives"
-        android:name="www.aidanm.trafficscotland.controllers.AlternativesController"
-        android:label="@string/title_alternatives"
-        tools:layout="@layout/fragment_alternatives" />
-
 </navigation>

@@ -20,15 +20,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        TodayController todayController = new TodayController();
-
-
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_today_in_transit, R.id.navigation_have_a_look, R.id.navigation_journey_planner, R.id.navigation_alternatives)
+                R.id.navigation_today_in_transit, R.id.navigation_have_a_look, R.id.navigation_journey_planner)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

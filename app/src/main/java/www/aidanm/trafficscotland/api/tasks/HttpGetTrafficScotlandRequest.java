@@ -28,7 +28,6 @@ import www.aidanm.trafficscotland.models.apimodels.AsyncTaskCallInput;
 import www.aidanm.trafficscotland.models.apimodels.TrafficScotlandAPIModel;
 import www.aidanm.trafficscotland.models.apimodels.TrafficScotlandChannel;
 import www.aidanm.trafficscotland.models.interfaces.AsyncResponse;
-import www.aidanm.trafficscotland.models.viewmodels.today.TodayViewModel;
 
 public class HttpGetTrafficScotlandRequest extends AsyncTask<TrafficScotlandAPIModel, Void, TrafficScotlandAPIModel> {
 
@@ -40,7 +39,6 @@ public class HttpGetTrafficScotlandRequest extends AsyncTask<TrafficScotlandAPIM
     public static final int CONNECTION_TIMEOUT = 15000;
     private XmlPullParserFactory xmlFactoryObject;
     private TrafficScotlandChannel channel = new TrafficScotlandChannel();
-    private TodayViewModel todayViewModel;
     private TextInputEditText dateInput;
     private EditText editTxt;
     private Button btn;

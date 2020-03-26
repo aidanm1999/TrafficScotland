@@ -4,6 +4,5 @@ package www.aidanm.trafficscotland.models.enums;
 public enum TrafficScotlandSourceViewRequest {
     Today,
     Look,
-    Journey,
-    Alternatives
+    Journey
 }

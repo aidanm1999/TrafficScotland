@@ -122,4 +122,18 @@ public class TrafficScotlandAPIController {
     }
 
 
+    public void getPlannedRoadWorks(TrafficScotlandSourceViewRequest viewRequest, TodayController controller){
+        HttpGetTrafficScotlandRequest getRequest = new HttpGetTrafficScotlandRequest();
+        AsyncTaskCallInput input = new AsyncTaskCallInput(
+                AsyncTaskCallUrlType.TrafficScotland_PlannedRoadworks,
+                plannedRoadWorksUrl,
+                viewRequest
+        );
+
+        TrafficScotlandAPIModel model = new TrafficScotlandAPIModel( new TrafficScotlandChannel(), input );
+        getRequest.delegate = controller;
+        getRequest.execute(model);
+    }
+
+
 }

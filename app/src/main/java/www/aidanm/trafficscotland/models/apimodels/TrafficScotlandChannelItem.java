@@ -12,6 +12,8 @@ public class TrafficScotlandChannelItem {
     private String Link;
     private TrafficScotlandCoordinates Coordinates;
     private Date DatePublished;
+    private Date StartDate;
+    private Date EndDate;
 
 
     // Empty Constructor
@@ -24,16 +26,27 @@ public class TrafficScotlandChannelItem {
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);
         DatePublished = today.getTime();
+        StartDate = today.getTime();
+        EndDate = today.getTime();
     }
 
 
     // Overloaded Constructor
-    public TrafficScotlandChannelItem(String title, String description, String link, TrafficScotlandCoordinates coordinates, Date datePublished){
+    public TrafficScotlandChannelItem(String title,
+                                      String description,
+                                      String link,
+                                      TrafficScotlandCoordinates coordinates,
+                                      Date datePublished,
+                                      Date startDate,
+                                      Date endDate)
+    {
         Title = title;
         Description = description;
         Link = link;
         Coordinates = coordinates;
         DatePublished = datePublished;
+        StartDate = startDate;
+        EndDate = endDate;
     }
 
 
@@ -79,5 +92,21 @@ public class TrafficScotlandChannelItem {
 
     public void setDatePublished(Date datePublished) {
         DatePublished = datePublished;
+    }
+
+    public Date getStartDate() {
+        return StartDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        StartDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return EndDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        EndDate = endDate;
     }
 }

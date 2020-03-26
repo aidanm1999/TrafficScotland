@@ -52,7 +52,6 @@ import java.util.List;
 
 import www.aidanm.trafficscotland.R;
 import www.aidanm.trafficscotland.api.controllers.TrafficScotlandAPIController;
-import www.aidanm.trafficscotland.api.controllers.TransportAPIController;
 import www.aidanm.trafficscotland.controllers.helpers.FormToastHelper;
 import www.aidanm.trafficscotland.models.apimodels.TrafficScotlandAPIModel;
 import www.aidanm.trafficscotland.models.apimodels.TrafficScotlandChannelItem;
