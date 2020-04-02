@@ -47,7 +47,6 @@ public class TrafficScotlandPullParser {
             int eventType = xpp.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT)
             {
-
                 switch (eventType){
                     case XmlPullParser.START_TAG:
                         if(xpp.getName() != null) {
